@@ -1,0 +1,149 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Implementation of a REST API for an employee app.
+
+Globals:
+  Function:
+    Runtime: java11
+    Timeout: 60
+    MemorySize: 256
+
+Parameters:
+  StageName:
+    Type: String
+    Default: dev
+    Description: The Lambda Function Stage
+
+Resources:
+  RestApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      Name:
+        Fn::Sub: employee-app-api-${StageName}
+      StageName:
+        Ref: StageName
+
+  testLambdaFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: com.example.app.handler.EmployeeRequestHandler::testLambda
+      Events:
+        List:
+          Type: Api
+          Properties:
+            Path: /
+            Method: GET
+            RestApiId:
+              Ref: RestApi
+
+  ListEmployeesFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName:
+        Fn::Sub: employee-app-list-employee-${StageName}
+      CodeUri: target/Employees-0.0.1-SNAPSHOT.jar
+      Handler: com.example.app.handler.EmployeeRequestHandler::listEmployees
+      Policies:
+        DynamoDBReadPolicy:
+          TableName:
+            Ref: EmployeeTable
+      Events:
+        List:
+          Type: Api
+          Properties:
+            Path: /employees
+            Method: GET
+            RestApiId:
+              Ref: RestApi
+
+  CreateEmployeeFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName:
+        Fn::Sub: employee-app-create-employee-${StageName}
+      CodeUri: target/Employees-0.0.1-SNAPSHOT.jar
+      Handler: com.example.app.handler.EmployeeRequestHandler::createEmployee
+      Policies:
+        DynamoDBReadPolicy:
+          TableName:
+            Ref: EmployeeTable
+      Events:
+        List:
+          Type: Api
+          Properties:
+            Path: /employees
+            Method: POST
+            RestApiId:
+              Ref: RestApi
+
+  GetEmployeeFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName:
+        Fn::Sub: employee-app-get-employee-${StageName}
+      CodeUri: target/Employees-0.0.1-SNAPSHOT.jar
+      Handler: com.example.app.handler.EmployeeRequestHandler::getEmployee
+      Policies:
+        DynamoDBReadPolicy:
+          TableName:
+            Ref: EmployeeTable
+      Events:
+        List:
+          Type: Api
+          Properties:
+            Path: /employees/{id}
+            Method: GET
+            RestApiId:
+              Ref: RestApi
+
+  UpdateEmployeeFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName:
+        Fn::Sub: employee-app-update-employee-${StageName}
+      CodeUri: target/Employees-0.0.1-SNAPSHOT.jar
+      Handler: com.example.app.handler.EmployeeRequestHandler::updateEmployee
+      Policies:
+        DynamoDBReadPolicy:
+          TableName:
+            Ref: EmployeeTable
+      Events:
+        List:
+          Type: Api
+          Properties:
+            Path: /employees/{id}
+            Method: PUT
+            RestApiId:
+              Ref: RestApi
+
+  DeleteEmployeeFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName:
+        Fn::Sub: employee-app-delete-employee-${StageName}
+      CodeUri: target/Employees-0.0.1-SNAPSHOT.jar
+      Handler: com.example.app.handler.EmployeeRequestHandler::deleteEmployee
+      Policies:
+        DynamoDBReadPolicy:
+          TableName:
+            Ref: EmployeeTable
+      Events:
+        List:
+          Type: Api
+          Properties:
+            Path: /employees/{id}
+            Method: DELETE
+            RestApiId:
+              Ref: RestApi
+
+  EmployeeTable:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      TableName:
+        Fn::Sub: employees
+      PrimaryKey:
+        Name: id
+        Type: String
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
