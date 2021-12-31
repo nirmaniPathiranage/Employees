@@ -14,7 +14,7 @@ phases:
       - echo "Zipping deployment package..."
   post_build:
     commands:
-      - Build completed on `date`
+      - echo Build completed on `date`
 artifacts:
   files:
     - target/EmployeeManagement-1.0.jar
