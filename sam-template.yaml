@@ -41,7 +41,7 @@ Resources:
     Properties:
       FunctionName:
         Fn::Sub: employee-app-list-employee-${StageName}
-      CodeUri: target/Employees-0.0.1-SNAPSHOT.jar
+      CodeUri: target/EmployeeManagement-1.0.jar
       Handler: com.example.app.handler.EmployeeRequestHandler::listEmployees
       Policies:
         DynamoDBReadPolicy:
@@ -61,7 +61,7 @@ Resources:
     Properties:
       FunctionName:
         Fn::Sub: employee-app-create-employee-${StageName}
-      CodeUri: target/Employees-0.0.1-SNAPSHOT.jar
+      CodeUri: target/EmployeeManagement-1.0.jar
       Handler: com.example.app.handler.EmployeeRequestHandler::createEmployee
       Policies:
         DynamoDBReadPolicy:
@@ -81,7 +81,7 @@ Resources:
     Properties:
       FunctionName:
         Fn::Sub: employee-app-get-employee-${StageName}
-      CodeUri: target/Employees-0.0.1-SNAPSHOT.jar
+      CodeUri: target/EmployeeManagement-1.0.jar
       Handler: com.example.app.handler.EmployeeRequestHandler::getEmployee
       Policies:
         DynamoDBReadPolicy:
@@ -101,7 +101,7 @@ Resources:
     Properties:
       FunctionName:
         Fn::Sub: employee-app-update-employee-${StageName}
-      CodeUri: target/Employees-0.0.1-SNAPSHOT.jar
+      CodeUri: target/EmployeeManagement-1.0.jar
       Handler: com.example.app.handler.EmployeeRequestHandler::updateEmployee
       Policies:
         DynamoDBReadPolicy:
@@ -121,7 +121,7 @@ Resources:
     Properties:
       FunctionName:
         Fn::Sub: employee-app-delete-employee-${StageName}
-      CodeUri: target/Employees-0.0.1-SNAPSHOT.jar
+      CodeUri: target/EmployeeManagement-1.0.jar
       Handler: com.example.app.handler.EmployeeRequestHandler::deleteEmployee
       Policies:
         DynamoDBReadPolicy:

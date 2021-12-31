@@ -10,11 +10,15 @@ phases:
   build:
     commands:
       - echo Build started on `date`
+      # Build the project
       - mvn package
-      - echo "Zipping deployment package..."
+      # create and upload a deployment package
+      - aws cloudformation package --template-file sam-template.yaml --s3-bucket cca-cw-ems --output-template-file sam-template-output.yaml
   post_build:
     commands:
       - echo Build completed on `date`
 artifacts:
   files:
     - target/EmployeeManagement-1.0.jar
+    - sam-template-output.yaml
+    - config-*.json
