@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class EmployeeRequestHandler {
 
     private EmployeeDao employeeDao;
+    String functionName = System.getenv("FUNCTION_NAME");
 
     public EmployeeDao getEmployeeDao() {
         if (this.employeeDao == null) {
@@ -142,4 +143,21 @@ public class EmployeeRequestHandler {
         return new APIGatewayProxyResponseEvent().withStatusCode(200);
     }
 
+    public APIGatewayProxyResponseEvent callFunctions(APIGatewayProxyRequestEvent request, Context context) {
+        if (functionName.equalsIgnoreCase("testLambda")) {
+            return testLambda(request, context);
+        } else if (functionName.equalsIgnoreCase("listEmployees")) {
+            return listEmployees(request, context);
+        } else if (functionName.equalsIgnoreCase("createEmployee")) {
+            return createEmployee(request, context);
+        } else if (functionName.equalsIgnoreCase("getEmployee")) {
+            return getEmployee(request, context);
+        } else if (functionName.equalsIgnoreCase("updateEmployee")) {
+            return updateEmployee(request, context);
+        } else if (functionName.equalsIgnoreCase("deleteEmployee")) {
+            return deleteEmployee(request, context);
+        } else {
+            return new APIGatewayProxyResponseEvent().withStatusCode(404);
+        }
+    }
 }
