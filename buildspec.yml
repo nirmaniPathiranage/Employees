@@ -20,5 +20,3 @@ phases:
 artifacts:
   files:
     - target/EmployeeManagement-1.0.jar
-    - template-output.yml
-    - config-*.json
