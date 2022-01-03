@@ -20,7 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class EmployeeRequestHandler {
 
     private EmployeeDao employeeDao;
-    String functionName = System.getenv("FUNCTION_NAME");
+    //String functionName = System.getenv("FUNCTION_NAME");
 
     public EmployeeDao getEmployeeDao() {
         if (this.employeeDao == null) {
@@ -142,6 +142,8 @@ public class EmployeeRequestHandler {
 
         return new APIGatewayProxyResponseEvent().withStatusCode(200);
     }
+
+    String functionName = System.getenv("FUNCTION_NAME");
 
     public APIGatewayProxyResponseEvent callFunctions(APIGatewayProxyRequestEvent request, Context context) {
         if (functionName.equalsIgnoreCase("testLambda")) {
